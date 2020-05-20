@@ -1,7 +1,6 @@
 package ru.ifmo.collections;
 
-import java.util.AbstractSet;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Represents sorted set of unique values.
@@ -16,21 +15,71 @@ import java.util.Comparator;
  *
  * @param <T> set contents type
  */
-public abstract class SortedSet<T> extends AbstractSet<T> {
-    // private final Map<???, ???> contents; TODO decide Map implementation and key/value types. "???" is used just as an example
+public class SortedSet<T> extends AbstractSet<T> {
+    private final TreeMap<T, Object> contents;
+
     public static <T> SortedSet<T> create() {
-        throw new UnsupportedOperationException(); // TODO implement
+        return new SortedSet<>();
     }
 
     public static <T> SortedSet<T> from(Comparator<T> comparator) {
-        throw new UnsupportedOperationException(); // TODO implement
+        return new SortedSet<>(comparator);
     }
 
-    public T[] getSorted() {
-        throw new UnsupportedOperationException(); // TODO implement
+    public List<T> getSorted() {
+        return new ArrayList<>(contents.keySet());
     }
 
-    public T[] getReversed() {
-        throw new UnsupportedOperationException(); // TODO implement
+    public List<T> getReversed() {
+        return new ArrayList<>(contents.descendingKeySet());
+    }
+
+    @Override
+    public boolean add(T element) {
+        return contents.put(element, null) == null;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> elements) {
+        boolean result = false;
+        for (T element : elements) {
+            result |= add(element);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean remove(Object element) {
+        if (element == null) {
+            throw new IllegalArgumentException("Null argument");
+        }
+        return contents.remove(element) == null;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> elements) {
+        boolean result = false;
+        for (Object element : elements) {
+            result |= !remove(element);
+        }
+        return result;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return contents.keySet().iterator();
+    }
+
+    @Override
+    public int size() {
+        return contents.size();
+    }
+
+    private SortedSet() {
+        this(null);
+    }
+
+    private SortedSet(Comparator<T> comparator) {
+        contents = new TreeMap<>(comparator);
     }
 }

@@ -1,5 +1,8 @@
 package ru.ifmo.collections;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Represents LRU cache with fixed maximum capacity.
  *
@@ -11,19 +14,33 @@ package ru.ifmo.collections;
  * Implementing this cache in (almost) the same manner as it was implemented during the lecture will result in extra points.
  */
 public class LruCache<K, V> {
+    private static final float LOAD_FACTOR = 1;
+
+    private LinkedHashMap<K, V> map;
+    private final int length;
+
     public LruCache(int capacity) {
-        // TODO implement
+        length = capacity;
+        map = new LinkedHashMap<>(capacity, LOAD_FACTOR, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+                return size() > length;
+            }
+        };
     }
 
     public V get(K key) {
-        throw new UnsupportedOperationException(); // TODO implement
+        if (map.containsKey(key)) {
+            return map.get(key);
+        }
+        return null;
     }
 
     public void put(K key, V value) {
-        // TODO implement
+        map.put(key, value);
     }
 
     public int elements() {
-        throw new UnsupportedOperationException(); // TODO implement
+        return map.size();
     }
 }
