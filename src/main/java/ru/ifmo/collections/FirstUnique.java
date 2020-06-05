@@ -8,14 +8,14 @@ import java.util.HashSet;
  * FirstUniqueTest can be used as an example.
  */
 public class FirstUnique {
-    static final int NULL_RES = -1;
+    private static final int NULL_RES = -1;
 
-    private HashSet<Integer> Unique;
-    private ArrayDeque<Integer> numbers;
+    private HashSet<Integer> unique; //contains numbers which are unique
+    private ArrayDeque<Integer> numbers; //contains all numbers
 
     public FirstUnique(int[] numbers) {
         this.numbers = new ArrayDeque<>();
-        Unique = new HashSet<>();
+        unique = new HashSet<>();
         for (Integer number : numbers) {
             add(number);
         }
@@ -23,7 +23,7 @@ public class FirstUnique {
 
     public int showFirstUnique() {
         for (Integer number : numbers) {
-            if (Unique.contains(number)) {
+            if (unique.contains(number)) {
                 return number;
             }
         }
@@ -31,11 +31,11 @@ public class FirstUnique {
     }
 
     public void add(int value) {
-        if (Unique.contains(value)) {
-            Unique.remove(value);
+        if (unique.contains(value)) {
+            unique.remove(value); //delete number from set if it's not unique already
             return;
         }
-        Unique.add(value);
-        numbers.add(value);
+        unique.add(value);
+        numbers.add(value); //or add to unique and numbers
     }
 }

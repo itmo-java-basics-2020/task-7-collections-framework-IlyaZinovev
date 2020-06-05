@@ -2,6 +2,7 @@ package ru.ifmo.collections;
 
 import java.util.*;
 
+
 /**
  * Represents sorted set of unique values.
  * create() returns a SortedSet instance with natural ordering. (i.e. from smallest to largest in case of integer numbers)
@@ -17,6 +18,14 @@ import java.util.*;
  */
 public class SortedSet<T> extends AbstractSet<T> {
     private final TreeMap<T, Object> contents;
+
+    private SortedSet() {
+        this(Comparator.naturalOrder());
+    }
+
+    private SortedSet(Comparator comparator) {
+        contents = new TreeMap<>(comparator);
+    }
 
     public static <T> SortedSet<T> create() {
         return new SortedSet<>();
@@ -73,13 +82,5 @@ public class SortedSet<T> extends AbstractSet<T> {
     @Override
     public int size() {
         return contents.size();
-    }
-
-    private SortedSet() {
-        this(null);
-    }
-
-    private SortedSet(Comparator<T> comparator) {
-        contents = new TreeMap<>(comparator);
     }
 }
